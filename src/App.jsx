@@ -1482,10 +1482,17 @@ function MaterialCard({
                       Total Length (m) <span className="text-green-600">for {projectUnits} units</span>
                     </label>
                     <input
-                      type="number"
-                      step="0.1"
+                      type="text"
+                      inputMode="decimal"
+                      pattern="[0-9]*[.,]?[0-9]*"
                       value={material.data.totalLength}
                       onChange={(e) => onUpdateData(material.id, 'totalLength', e.target.value)}
+                      onBlur={(e) => {
+                        const normalized = e.target.value.replace(',', '.')
+                        if (normalized !== e.target.value) {
+                          onUpdateData(material.id, 'totalLength', normalized)
+                        }
+                      }}
                       className="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-green-500"
                       placeholder="e.g. 70"
                     />
@@ -1704,10 +1711,17 @@ function MaterialCard({
                       Total Length (m) <span className="text-pink-600">for {projectUnits} units</span>
                     </label>
                     <input
-                      type="number"
-                      step="0.1"
+                      type="text"
+                      inputMode="decimal"
+                      pattern="[0-9]*[.,]?[0-9]*"
                       value={material.data.totalLength}
                       onChange={(e) => onUpdateData(material.id, 'totalLength', e.target.value)}
+                      onBlur={(e) => {
+                        const normalized = e.target.value.replace(',', '.')
+                        if (normalized !== e.target.value) {
+                          onUpdateData(material.id, 'totalLength', normalized)
+                        }
+                      }}
                       className="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-pink-500"
                       placeholder="e.g. 16"
                     />
