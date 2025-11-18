@@ -58,12 +58,9 @@ function App() {
   
   // Helper function to parse float with comma or dot as decimal separator
   const parseNumber = (value) => {
-    console.log('parseNumber - raw input:', value, 'type:', typeof value)
     if (typeof value === 'number') return value
-    if (!value || value === '') {
-      console.log('parseNumber - empty value, returning 0')
-      return 0
-    }
+    if (!value || value === '') return 0
+    
     // Convert to string and normalize
     let str = String(value).trim()
     
@@ -75,7 +72,6 @@ function App() {
     str = str.replace(/[^\d.-]/g, '')
     
     const result = parseFloat(str)
-    console.log('parseNumber - normalized:', str, 'result:', result, 'isNaN:', isNaN(result))
     return isNaN(result) ? 0 : result
   }
   
@@ -215,9 +211,7 @@ function App() {
       breakdown.push(`2️⃣ Total Net Area (${qty} pcs): ${(netArea).toFixed(4)} × ${qty} = ${totalNetArea.toFixed(4)} m²`)
     } else {
       // Mode B: Direct area input
-      console.log('Direct Area Mode - Raw value:', data.directArea)
       totalNetArea = parseNumber(data.directArea) || 0
-      console.log('Direct Area Mode - Parsed value:', totalNetArea)
       
       if (totalNetArea === 0) {
         return {
