@@ -473,6 +473,27 @@ function App() {
     }
   }, [materials])
   
+  // Handle print with dynamic filename based on project name
+  useEffect(() => {
+    const handleBeforePrint = () => {
+      const originalTitle = document.title
+      document.title = `HPP ${projectName || 'Project'}`
+      
+      // Restore original title after print dialog closes
+      const handleAfterPrint = () => {
+        document.title = originalTitle
+      }
+      
+      window.addEventListener('afterprint', handleAfterPrint, { once: true })
+    }
+    
+    window.addEventListener('beforeprint', handleBeforePrint)
+    
+    return () => {
+      window.removeEventListener('beforeprint', handleBeforePrint)
+    }
+  }, [projectName])
+  
   // Hardware functions
   const addHardwareItem = () => {
     setHardwareItems([...hardwareItems, { 
