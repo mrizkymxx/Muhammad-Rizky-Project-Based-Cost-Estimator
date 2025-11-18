@@ -173,6 +173,18 @@ function App() {
       const cutL = parseFloat(data.cutLength) || 0
       const cutW = parseFloat(data.cutWidth) || 0
       
+      if (cutL === 0 || cutW === 0) {
+        return {
+          unitsNeeded: 0,
+          unitName: 'Lembar',
+          totalCost: 0,
+          breakdown: ['⚠️ Please enter cut length and width'],
+          wasteAmount: 0,
+          wasteUnit: 'm²',
+          wastePercent: waste
+        }
+      }
+      
       const netArea = (cutL * cutW) / 10000 // cm² to m²
       breakdown.push(`1️⃣ Net Area per Piece: ${cutL} × ${cutW} cm = ${(netArea).toFixed(4)} m²`)
       
@@ -181,6 +193,19 @@ function App() {
     } else {
       // Mode B: Direct area input
       totalNetArea = parseFloat(data.directArea) || 0
+      
+      if (totalNetArea === 0) {
+        return {
+          unitsNeeded: 0,
+          unitName: 'Lembar',
+          totalCost: 0,
+          breakdown: ['⚠️ Please enter total area'],
+          wasteAmount: 0,
+          wasteUnit: 'm²',
+          wastePercent: waste
+        }
+      }
+      
       breakdown.push(`1️⃣ Total Net Area (Direct Input): ${totalNetArea.toFixed(4)} m²`)
       breakdown.push(`   (For ${qty} units total)`)
     }
@@ -1311,6 +1336,7 @@ function MaterialCard({
                     </label>
                     <input
                       type="number"
+                      inputMode="decimal"
                       step="0.1"
                       value={material.data.directArea}
                       onChange={(e) => onUpdateData(material.id, 'directArea', e.target.value)}
