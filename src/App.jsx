@@ -64,10 +64,18 @@ function App() {
       console.log('parseNumber - empty value, returning 0')
       return 0
     }
-    // Replace comma with dot for proper float parsing
-    const normalized = String(value).trim().replace(',', '.')
-    const result = parseFloat(normalized)
-    console.log('parseNumber - normalized:', normalized, 'result:', result, 'isNaN:', isNaN(result))
+    // Convert to string and normalize
+    let str = String(value).trim()
+    
+    // Replace various comma types and special characters
+    // iPhone keyboard might send different comma characters
+    str = str.replace(/[,،٫]/g, '.') // Regular comma, Arabic comma, Arabic decimal separator
+    
+    // Remove any non-numeric characters except dot, minus, and plus
+    str = str.replace(/[^\d.-]/g, '')
+    
+    const result = parseFloat(str)
+    console.log('parseNumber - normalized:', str, 'result:', result, 'isNaN:', isNaN(result))
     return isNaN(result) ? 0 : result
   }
   
@@ -1352,11 +1360,18 @@ function MaterialCard({
                       Total Area (m²) <span className="text-blue-600">for {projectUnits} units</span>
                     </label>
                     <input
-                      type="number"
+                      type="text"
                       inputMode="decimal"
-                      step="0.1"
+                      pattern="[0-9]*[.,]?[0-9]*"
                       value={material.data.directArea}
                       onChange={(e) => onUpdateData(material.id, 'directArea', e.target.value)}
+                      onBlur={(e) => {
+                        // Normalize on blur to replace comma with dot for display
+                        const normalized = e.target.value.replace(',', '.')
+                        if (normalized !== e.target.value) {
+                          onUpdateData(material.id, 'directArea', normalized)
+                        }
+                      }}
                       className="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500"
                       placeholder="e.g. 6.5"
                     />
