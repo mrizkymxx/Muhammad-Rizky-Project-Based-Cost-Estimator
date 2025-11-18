@@ -56,6 +56,15 @@ function App() {
     }).format(amount || 0)
   }
   
+  // Helper function to parse float with comma or dot as decimal separator
+  const parseNumber = (value) => {
+    if (typeof value === 'number') return value
+    if (!value) return 0
+    // Replace comma with dot for proper float parsing
+    const normalized = String(value).replace(',', '.')
+    return parseFloat(normalized) || 0
+  }
+  
   // Add new material
   const addMaterial = (type) => {
     const newMaterialId = Date.now()
@@ -157,11 +166,11 @@ function App() {
   const calculatePanel = (material) => {
     const breakdown = []
     const data = material.data
-    const rawL = parseFloat(data.rawSheetLength) || 1
-    const rawW = parseFloat(data.rawSheetWidth) || 1
-    const qty = parseFloat(projectUnits) || 1
-    const price = parseFloat(data.pricePerSheet) || 0
-    const waste = parseFloat(data.wastePercent) || 0
+    const rawL = parseNumber(data.rawSheetLength) || 1
+    const rawW = parseNumber(data.rawSheetWidth) || 1
+    const qty = parseNumber(projectUnits) || 1
+    const price = parseNumber(data.pricePerSheet) || 0
+    const waste = parseNumber(data.wastePercent) || 0
     
     breakdown.push(`📦 PANEL: ${material.name || 'Unnamed'}`)
     breakdown.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
@@ -170,8 +179,8 @@ function App() {
     
     if (data.inputMode === 'dimension') {
       // Mode A: Calculate from dimensions
-      const cutL = parseFloat(data.cutLength) || 0
-      const cutW = parseFloat(data.cutWidth) || 0
+      const cutL = parseNumber(data.cutLength) || 0
+      const cutW = parseNumber(data.cutWidth) || 0
       
       if (cutL === 0 || cutW === 0) {
         return {
@@ -192,7 +201,7 @@ function App() {
       breakdown.push(`2️⃣ Total Net Area (${qty} pcs): ${(netArea).toFixed(4)} × ${qty} = ${totalNetArea.toFixed(4)} m²`)
     } else {
       // Mode B: Direct area input
-      totalNetArea = parseFloat(data.directArea) || 0
+      totalNetArea = parseNumber(data.directArea) || 0
       
       if (totalNetArea === 0) {
         return {
@@ -246,10 +255,10 @@ function App() {
   const calculateLinear = (material) => {
     const breakdown = []
     const data = material.data
-    const rawBarLength = parseFloat(data.rawBarLength) || 1
-    const qty = parseFloat(projectUnits) || 1
-    const price = parseFloat(data.pricePerUnit) || 0
-    const waste = parseFloat(data.wastePercent) || 0
+    const rawBarLength = parseNumber(data.rawBarLength) || 1
+    const qty = parseNumber(projectUnits) || 1
+    const price = parseNumber(data.pricePerUnit) || 0
+    const waste = parseNumber(data.wastePercent) || 0
     
     breakdown.push(`📏 LINEAR: ${material.name || 'Unnamed'}`)
     breakdown.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
@@ -258,12 +267,12 @@ function App() {
     
     if (data.inputMode === 'perUnit') {
       // Mode A: Per unit calculation
-      const lengthPerUnit = parseFloat(data.lengthPerUnit) || 0
+      const lengthPerUnit = parseNumber(data.lengthPerUnit) || 0
       netLength = lengthPerUnit * qty
       breakdown.push(`1️⃣ Total Net Length: ${lengthPerUnit} m × ${qty} pcs = ${netLength.toFixed(2)} m`)
     } else {
       // Mode B: Direct total length
-      netLength = parseFloat(data.totalLength) || 0
+      netLength = parseNumber(data.totalLength) || 0
       breakdown.push(`1️⃣ Total Net Length (Direct Input): ${netLength.toFixed(2)} m`)
       breakdown.push(`   (For ${qty} units total)`)
     }
@@ -317,12 +326,12 @@ function App() {
   const calculateLiquid = (material) => {
     const breakdown = []
     const data = material.data
-    const surfaceArea = parseFloat(data.surfaceArea) || 0
-    const numLayers = parseFloat(data.numLayers) || 1
-    const coverage = parseFloat(data.coverage) || 1
-    const qty = parseFloat(projectUnits) || 1
-    const price = parseFloat(data.pricePerLiter) || 0
-    const waste = parseFloat(data.wastePercent) || 0
+    const surfaceArea = parseNumber(data.surfaceArea) || 0
+    const numLayers = parseNumber(data.numLayers) || 1
+    const coverage = parseNumber(data.coverage) || 1
+    const qty = parseNumber(projectUnits) || 1
+    const price = parseNumber(data.pricePerLiter) || 0
+    const waste = parseNumber(data.wastePercent) || 0
     
     breakdown.push(`💧 LIQUID: ${material.name || 'Unnamed'}`)
     breakdown.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
@@ -366,8 +375,8 @@ function App() {
   const calculateUnit = (material) => {
     const breakdown = []
     const data = material.data
-    const qtyNeeded = parseFloat(data.qtyNeeded) || 0
-    const price = parseFloat(data.pricePerUnit) || 0
+    const qtyNeeded = parseNumber(data.qtyNeeded) || 0
+    const price = parseNumber(data.pricePerUnit) || 0
     
     breakdown.push(`📦 UNIT: ${material.name || 'Unnamed'}`)
     breakdown.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
@@ -393,10 +402,10 @@ function App() {
   const calculateFabric = (material) => {
     const breakdown = []
     const data = material.data
-    const qty = parseFloat(projectUnits) || 1
-    const price = parseFloat(data.pricePerMeter) || 0
-    const waste = parseFloat(data.wastePercent) || 0
-    const fabricWidth = parseFloat(data.fabricWidth) || 0
+    const qty = parseNumber(projectUnits) || 1
+    const price = parseNumber(data.pricePerMeter) || 0
+    const waste = parseNumber(data.wastePercent) || 0
+    const fabricWidth = parseNumber(data.fabricWidth) || 0
     
     breakdown.push(`🧵 FABRIC: ${material.name || 'Unnamed'}`)
     breakdown.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
@@ -409,12 +418,12 @@ function App() {
     
     if (data.inputMode === 'perUnit') {
       // Mode A: Per unit calculation
-      const lengthPerUnit = parseFloat(data.lengthPerUnit) || 0
+      const lengthPerUnit = parseNumber(data.lengthPerUnit) || 0
       netLength = lengthPerUnit * qty
       breakdown.push(`1️⃣ Net Length: ${lengthPerUnit} m/unit × ${qty} units = ${netLength.toFixed(2)} m`)
     } else {
       // Mode B: Direct total length
-      netLength = parseFloat(data.totalLength) || 0
+      netLength = parseNumber(data.totalLength) || 0
       breakdown.push(`1️⃣ Net Length (Direct Input): ${netLength.toFixed(2)} m`)
       breakdown.push(`   (For ${qty} units total)`)
     }
@@ -592,21 +601,21 @@ function App() {
     }, 0)
     
     const hardwareCost = hardwareItems.reduce((sum, item) => {
-      const qty = parseFloat(item.qty) || 0
-      const price = parseFloat(item.price) || 0
+      const qty = parseNumber(item.qty) || 0
+      const price = parseNumber(item.price) || 0
       const multiplier = item.perUnit ? projectUnits : 1
       return sum + (qty * price * multiplier)
     }, 0)
     
     const labor = laborItems.reduce((sum, item) => {
-      const cost = parseFloat(item.costPerUnit) || 0
+      const cost = parseNumber(item.costPerUnit) || 0
       const multiplier = item.perUnit ? projectUnits : 1
       return sum + (cost * multiplier)
     }, 0)
     
     const subtotal = materialCost + hardwareCost + labor
     
-    const overhead = (parseFloat(overheadPercent) || 0) / 100 * subtotal
+    const overhead = (parseNumber(overheadPercent) || 0) / 100 * subtotal
     
     const grandTotal = subtotal + overhead
     const hppPerUnit = grandTotal / projectUnits
