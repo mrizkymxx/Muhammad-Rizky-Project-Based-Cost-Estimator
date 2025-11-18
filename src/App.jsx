@@ -422,7 +422,7 @@ function App() {
     }
   }
   
-  // Calculate material and update
+  // Calculate material and update (fixed with functional state update)
   const calculateMaterial = (material) => {
     let result
     switch(material.type) {
