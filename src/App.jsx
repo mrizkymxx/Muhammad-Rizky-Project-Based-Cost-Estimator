@@ -607,7 +607,7 @@ function App() {
       projectUnits,
       materials,
       hardwareItems,
-      laborPerUnit,
+      laborItems,
       overheadPercent,
       totals
     }
