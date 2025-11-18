@@ -275,7 +275,7 @@ function App() {
     breakdown.push(`━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━`)
     
     // Calculate waste
-    const wasteLength = grossLength - totalNetLength
+    const wasteLength = grossLength - netLength
     
     return {
       unitsNeeded: unitsNeeded,
