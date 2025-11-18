@@ -495,6 +495,26 @@ function App() {
     }
   }, [projectName])
   
+  // Add inputMode to all number inputs for mobile numeric keyboard
+  useEffect(() => {
+    const addInputMode = () => {
+      const numberInputs = document.querySelectorAll('input[type="number"]')
+      numberInputs.forEach(input => {
+        if (!input.hasAttribute('inputmode')) {
+          input.setAttribute('inputmode', 'decimal')
+        }
+      })
+    }
+    
+    // Run on mount and when materials change
+    addInputMode()
+    
+    // Also run after a short delay to catch dynamically added inputs
+    const timer = setTimeout(addInputMode, 100)
+    
+    return () => clearTimeout(timer)
+  }, [materials, hardwareItems, laborItems])
+  
   // Hardware functions
   const addHardwareItem = () => {
     setHardwareItems([...hardwareItems, { 
@@ -688,6 +708,7 @@ function App() {
               </label>
               <input
                 type="number"
+                inputMode="numeric"
                 value={projectUnits}
                 onChange={(e) => setProjectUnits(e.target.value)}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm sm:text-base"
@@ -834,6 +855,7 @@ function App() {
                   />
                   <input
                     type="number"
+                    inputMode="numeric"
                     value={item.qty}
                     onChange={(e) => updateHardwareItem(item.id, 'qty', e.target.value)}
                     placeholder="Qty"
@@ -841,6 +863,7 @@ function App() {
                   />
                   <input
                     type="number"
+                    inputMode="decimal"
                     value={item.price}
                     onChange={(e) => updateHardwareItem(item.id, 'price', e.target.value)}
                     placeholder="Price"
@@ -899,6 +922,7 @@ function App() {
                   />
                   <input
                     type="number"
+                    inputMode="decimal"
                     value={item.costPerUnit}
                     onChange={(e) => updateLaborItem(item.id, 'costPerUnit', e.target.value)}
                     placeholder="Cost"
@@ -946,6 +970,7 @@ function App() {
               </label>
               <input
                 type="number"
+                inputMode="decimal"
                 value={overheadPercent}
                 onChange={(e) => setOverheadPercent(e.target.value)}
                 placeholder="e.g., 5"
@@ -1258,6 +1283,7 @@ function MaterialCard({
                       <label className="block text-xs font-medium text-gray-700 mb-1">Cut Length (cm)</label>
                       <input
                         type="number"
+                        inputMode="decimal"
                         value={material.data.cutLength}
                         onChange={(e) => onUpdateData(material.id, 'cutLength', e.target.value)}
                         className="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500"
@@ -1268,6 +1294,7 @@ function MaterialCard({
                       <label className="block text-xs font-medium text-gray-700 mb-1">Cut Width (cm)</label>
                       <input
                         type="number"
+                        inputMode="decimal"
                         value={material.data.cutWidth}
                         onChange={(e) => onUpdateData(material.id, 'cutWidth', e.target.value)}
                         className="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-blue-500"
