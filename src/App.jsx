@@ -126,14 +126,14 @@ function App() {
   
   // Update material
   const updateMaterial = (id, field, value) => {
-    setMaterials(materials.map(mat => 
+    setMaterials(prevMaterials => prevMaterials.map(mat => 
       mat.id === id ? { ...mat, [field]: value } : mat
     ))
   }
   
   // Update material data
   const updateMaterialData = (id, field, value) => {
-    setMaterials(materials.map(mat => 
+    setMaterials(prevMaterials => prevMaterials.map(mat => 
       mat.id === id ? { 
         ...mat, 
         data: { ...mat.data, [field]: value }
@@ -143,12 +143,12 @@ function App() {
   
   // Delete material
   const deleteMaterial = (id) => {
-    setMaterials(materials.filter(mat => mat.id !== id))
+    setMaterials(prevMaterials => prevMaterials.filter(mat => mat.id !== id))
   }
   
   // Toggle material expanded
   const toggleMaterialExpanded = (id) => {
-    setMaterials(materials.map(mat => 
+    setMaterials(prevMaterials => prevMaterials.map(mat => 
       mat.id === id ? { ...mat, expanded: !mat.expanded } : mat
     ))
   }
@@ -445,7 +445,8 @@ function App() {
         result = { unitsNeeded: 0, unitName: '', totalCost: 0, breakdown: [] }
     }
     
-    setMaterials(materials.map(mat => 
+    // Use functional update to avoid stale closure
+    setMaterials(prevMaterials => prevMaterials.map(mat => 
       mat.id === material.id ? { 
         ...mat, 
         result: result,
