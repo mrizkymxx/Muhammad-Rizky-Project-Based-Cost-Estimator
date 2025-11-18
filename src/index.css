@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only-summary {
+    display: none !important;
+  }
+  
+  body {
+    background: white;
+    font-size: 11px !important;
+  }
+  
+  .print-section {
+    page-break-inside: avoid;
+  }
+  
+  /* Ensure everything fits in one page */
+  @page {
+    margin: 0.5cm;
+    size: A4;
+  }
+  
+  /* Make HPP Summary full width on print */
+  .max-w-7xl {
+    max-width: 100% !important;
+  }
+  
+  .grid-cols-1.lg\:grid-cols-2 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Compact spacing for print */
+  * {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+  
+  .space-y-3 > * + * {
+    margin-top: 0.5rem !important;
+  }
+  
+  .space-y-2 > * + * {
+    margin-top: 0.25rem !important;
+  }
+  
+  /* Smaller text sizes for print */
+  h2 {
+    font-size: 16px !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  h3 {
+    font-size: 14px !important;
+  }
+  
+  .text-xs, .text-sm, .text-base {
+    font-size: 10px !important;
+  }
+  
+  /* Compact padding */
+  .p-4, .p-6, .px-4, .py-4, .px-6, .py-6 {
+    padding: 0.5rem !important;
+  }
+  
+  .mb-4, .mb-6 {
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .mt-6 {
+    margin-top: 0.5rem !important;
+  }
+  
+  /* Ensure no page breaks inside important sections */
+  .bg-white {
+    page-break-inside: avoid;
+  }
+}
