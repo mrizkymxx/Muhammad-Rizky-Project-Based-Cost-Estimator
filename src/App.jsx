@@ -62,7 +62,9 @@ function App() {
     if (!value) return 0
     // Replace comma with dot for proper float parsing
     const normalized = String(value).replace(',', '.')
-    return parseFloat(normalized) || 0
+    const result = parseFloat(normalized) || 0
+    console.log('parseNumber - input:', value, 'normalized:', normalized, 'result:', result)
+    return result
   }
   
   // Add new material
@@ -201,7 +203,9 @@ function App() {
       breakdown.push(`2️⃣ Total Net Area (${qty} pcs): ${(netArea).toFixed(4)} × ${qty} = ${totalNetArea.toFixed(4)} m²`)
     } else {
       // Mode B: Direct area input
+      console.log('Direct Area Mode - Raw value:', data.directArea)
       totalNetArea = parseNumber(data.directArea) || 0
+      console.log('Direct Area Mode - Parsed value:', totalNetArea)
       
       if (totalNetArea === 0) {
         return {
