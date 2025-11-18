@@ -58,13 +58,17 @@ function App() {
   
   // Helper function to parse float with comma or dot as decimal separator
   const parseNumber = (value) => {
+    console.log('parseNumber - raw input:', value, 'type:', typeof value)
     if (typeof value === 'number') return value
-    if (!value) return 0
+    if (!value || value === '') {
+      console.log('parseNumber - empty value, returning 0')
+      return 0
+    }
     // Replace comma with dot for proper float parsing
-    const normalized = String(value).replace(',', '.')
-    const result = parseFloat(normalized) || 0
-    console.log('parseNumber - input:', value, 'normalized:', normalized, 'result:', result)
-    return result
+    const normalized = String(value).trim().replace(',', '.')
+    const result = parseFloat(normalized)
+    console.log('parseNumber - normalized:', normalized, 'result:', result, 'isNaN:', isNaN(result))
+    return isNaN(result) ? 0 : result
   }
   
   // Add new material
